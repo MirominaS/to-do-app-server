@@ -19,10 +19,18 @@ export const getTodoListController = async(req,res) => {
                 updatedOn : updated_on
             })
         }
-        return res.status(200).json(formattedTodoList)
+        return res.status(200).json({
+            data: formattedTodoList,
+            message: "Tasks fetched successfully",
+            success: true
+        })
     } catch (error) {
         console.log(error)
-        return res.status(500).json({message:"Something went wrong!"})
+        return res.status(500).json({
+            data:null,
+            message: "Something went wrong!",
+            success: false
+        })
     }
 }
 
