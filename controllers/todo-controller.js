@@ -60,7 +60,7 @@ export const marksAsDoneController = async(req,res) => {
         await pool.query(`update main.todo_collection set is_done = true where todo_id = ${id}`)
         return res.status(200).json({
             data:null,
-            message:"Updated successfully",
+            message:"Compelted task successfully",
             success:true
         })
     } catch (error) {
