@@ -3,7 +3,7 @@ import { pool } from "../configs/db-config.js"
 export const getTodoListController = async(req,res) => {
     try {
         const {limit,offset} = req.query
-        const result = await pool.query(`select * from main.todo_collection where is_done = false order by todo_id desc limit ${limit} offset ${offset}`)
+        const result = await pool.query(`select * from todo_collection where is_done = false order by todo_id desc limit ${limit} offset ${offset}`)
         console.log(result.rows)
         let todoList = result.rows
         let formattedTodoList = []
