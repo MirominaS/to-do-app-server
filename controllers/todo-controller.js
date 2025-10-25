@@ -38,7 +38,7 @@ export const getTodoListController = async(req,res) => {
 export const insertTodoListController = async(req,res) => {
     try {
         const {title, description} = req.body 
-        await pool.query(`insert into main.todo_collection(title, description) values ( $1, $2 )`,[title,description])      
+        await pool.query(`insert into todo_collection(title, description) values ( $1, $2 )`,[title,description])      
         return res.status(200).json({
             data: {title,description},
             message: "Task added successfully!",
@@ -57,7 +57,7 @@ export const insertTodoListController = async(req,res) => {
 export const marksAsDoneController = async(req,res) => {
     try {
         const {id} = req.body
-        await pool.query(`update main.todo_collection set is_done = true where todo_id = ${id}`)
+        await pool.query(`update todo_collection set is_done = true where todo_id = ${id}`)
         return res.status(200).json({
             data:null,
             message:"Compelted task successfully",
