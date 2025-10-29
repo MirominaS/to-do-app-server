@@ -3,9 +3,9 @@ import { pool } from "../configs/db-config.js"
 export const getTodoListController = async(req,res) => {
    
     try {
-        const limit = parseInt(req.query.limit) || 5;
+        const limit = parseInt(req.query.limit) || 10;
         const offset = parseInt(req.query.offset) || 0;
-        const result = await pool.query(`select * from todo_collection where is_done = false order by todo_id desc limit ${limit} offset ${offset}`)
+        const result = await pool.query(`select * from main.todo_collection where is_done = false order by todo_id desc limit ${limit} offset ${offset}`)
         console.log(result.rows)
         let todoList = result.rows
         let formattedTodoList = []
@@ -40,7 +40,7 @@ export const getTodoListController = async(req,res) => {
 export const insertTodoListController = async(req,res) => {
     try {
         const {title, description} = req.body 
-        await pool.query(`insert into todo_collection(title, description) values ( $1, $2 )`,[title,description])      
+        await pool.query(`insert into main.todo_collection(title, description) values ( $1, $2 )`,[title,description])      
         return res.status(200).json({
             data: {title,description},
             message: "Task added successfully!",
@@ -59,10 +59,29 @@ export const insertTodoListController = async(req,res) => {
 export const marksAsDoneController = async(req,res) => {
     try {
         const {id} = req.body
-        await pool.query(`update todo_collection set is_done = true where todo_id = ${id}`)
+        await pool.query(`update main.todo_collection set is_done = true where todo_id = ${id}`)
         return res.status(200).json({
             data:null,
             message:"Task marked as done!",
+            success:true
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            data:null,
+            message:"Something went wrong!",
+            success:false
+        })
+    }
+}
+
+export const updateController = async(req,res) => {
+    try {
+        const {id,title,description} = req.body
+        await pool.query(`update main.todo_collection set title = $1, description = $2,updated_on = Now() where todo_id = $3`,[title,description,id])
+        return res.status(200).json({
+            data: {title,description},
+            message:"Task updated as Successfully!",
             success:true
         })
     } catch (error) {
